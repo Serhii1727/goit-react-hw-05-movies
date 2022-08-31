@@ -1,28 +1,39 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
-import TrendingFilms from "./TrendingFilms";
-import { fetchTrendingFilms } from "components/api/api";
-import { API } from "components/api/api";
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Header, NavList, NavListItem } from "./App.styled";
+import { navItems } from "./services/services.js"
+
+
 
 export const App = () => {
-  const [trendingFilms, setTrendingFilms] = useState([]);
-
-  useEffect(() => {
-    fetchTrendingFilms(API)
-      .then(res => res.json())
-      .then(({ results }) => {
-        setTrendingFilms([...results.map(({ name, title, id }) => {
-          return { name: name || title, id }
-        })])
-
-      })
-  }, [])
 
   return (
     <div>
-      <Navbar />
-      <h1>Trending today</h1>
-      <TrendingFilms trendingFilms={trendingFilms} />
+      <Header className="header">
+        <NavList className="navigation">
+          {navItems.map(({ href, text }) => <NavListItem key={href} className="navigation__item"><Link to={href} >{text}</Link></NavListItem>)}
+        </NavList>
+      </Header>
+      <Routes>
+        <Route path='/' element={<div>Trending films</div>}></Route>
+        <Route path='movies' element={<div>Movies</div>} />
+      </Routes>
     </div>
   );
 };
+
+
+
+// const [trendingFilms, setTrendingFilms] = useState([]);
+
+// useEffect(() => {
+//   fetchTrendingFilms(API)
+//     .then(res => res.json())
+//     .then(({ results }) => {
+//       setTrendingFilms([...results.map(({ name, title, id }) => {
+//         return { name: name || title, id }
+//       })])
+
+//     })
+// }, [])
+
