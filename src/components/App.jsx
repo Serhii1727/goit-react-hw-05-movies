@@ -2,15 +2,17 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react"
 import Home from "pages/Home";
-import { Header, NavList, NavListItem } from "./App.styled";
+import Movies from "pages/Movies";
 import MovieDetails from "pages/MovieDetails";
+import Cast from "./Cast";
+import { Header, NavList, NavListItem } from "./App.styled";
 import { getTrendingFilms, API } from "./api/api";
 import { navItems } from "./services/services.js"
 
 
-
 export const App = () => {
   const [trendingFilms, setTrendingFilms] = useState([]);
+
 
   useEffect(() => {
     getTrendingFilms(API)
@@ -22,6 +24,7 @@ export const App = () => {
       })
   }, [])
 
+
   return (
     <div>
       <Header className="header">
@@ -31,8 +34,11 @@ export const App = () => {
       </Header>
       <Routes>
         <Route path='/' element={<Home trendingFilms={trendingFilms} />}></Route>
-        <Route path='movies' element={<div>Movies</div>} />
-        <Route path='movies/:movieId' element={<MovieDetails />} />
+        <Route path='movies' element={<Movies />} />
+        <Route path='movies/:movieId' element={<MovieDetails />}>
+          <Route path='cast' element={<Cast />} />
+          <Route path='reviews' element={<div>Это reviews</div>} />
+        </Route>
       </Routes>
     </div>
   );
